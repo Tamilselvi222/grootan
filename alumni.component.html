@@ -1,0 +1,236 @@
+<p *ngIf="role != 'STUDENT'">alumni works!</p>
+<div *ngIf="role == 'STUDENT'">
+  <!-------------Breadcrumb starts-->
+  <div class="row">
+    <div class="col-md-6 col-sm-12 col-xs-12 col-md-lg-6">
+      <div class="breadcrumb">
+        <li class="breadcrumb-item">
+          <i class="fa fa-graduation-cap"></i>&nbsp;Alumni
+        </li>
+      </div>
+    </div>
+  </div>
+  <!------------Breadcrumb ends----------->
+
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <button
+        class="btn other-button"
+        (click)="requestAlumni()"
+        [disabled]="filter_on_specialization.length == 0"
+      >
+        Request to meet alumni
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <ul id="tabs" class="nav nav-tabs border-0">
+      <li
+        *ngFor="let navtab of nav_tab_list; let i = index"
+        [ngClass]="{ active: i == selectedCategoryIndex }"
+        [attr.data-target]="'#tabview' + i"
+        data-toggle="tab"
+        id="appraiselCategory{{ i }}"
+      >
+        <a class="p-1 px-4" id="tabs{{ i }}" (click)="selectedCategory(i)">{{
+          navtab
+        }}</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row px-3 height">
+    <div class="col-md-12 bg-white border rounded">
+      <div *ngIf="searchFlag">
+        <div class="row mt-3">
+          <div class="col-md-12 text-right">
+            <span
+              class="badge badge-pill border-secondary"
+              (click)="filterData()"
+            >
+              <i class="fa fa-sliders filters mr-2"></i>Filter<i
+                class="fa fa-angle-down ml-5"
+              ></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="!is_filtered_data">
+          <div class="col-md-12 text-center pt-5 mt-5">
+            No data is available! Please click on “Filter” and select values to
+            view data
+          </div>
+        </div>
+
+        <!----------------After applying filter-->
+
+        <div *ngIf="is_filtered_data">
+          <div class="row">
+            <div class="col-md-6">
+              <span class="filters"
+                ><i class="fa fa-sliders"></i>&nbsp;Filters Applied</span
+              >
+              <div class="border rounded p-2 border-width">
+                <div class="row col-md-12">
+                  <div class="col-md-3 px-0">
+                    <div class="text-success">
+                      Job Position
+                    </div>
+                    <div *ngFor="let item of filtered_job_position">
+                      {{ item }}
+                    </div>
+                  </div>
+                  <div class="col-md-3 divider">
+                    <div class="text-success">
+                      Experience
+                    </div>
+                    <div *ngFor="let item of filtered_experience">
+                      {{ item }}
+                    </div>
+                  </div>
+                  <div class="col-md-3 divider">
+                    <div class="text-success">
+                      Academic Year
+                    </div>
+                    <div *ngFor="let item of filtered_academic_year">
+                      {{ item }}
+                    </div>
+                  </div>
+                  <div class="col-md-3 divider">
+                    <div class="text-success">
+                      Specialization
+                    </div>
+                    <div *ngFor="let item of filterd_specialization">
+                      {{ item }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-2 col-sm-2">
+              Show
+              <select class="show-entries dropdown" [(ngModel)]="rowsOnPage">
+                <option [value]="5">5</option>
+                <option [value]="10">10</option>
+                <option [value]="15">15</option>
+                <option [value]="20">20</option> </select
+              >&nbsp;Entries
+            </div>
+
+            <div class="col-md-3 col-sm-7 row">
+              <div class="col-md-10 p-0 ml-0">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search by Name or USN"
+                  [(ngModel)]="search_Value"
+                  (ngModelChange)="clearSearch()"
+                />
+              </div>
+              <div class="col-md-2 p-0">
+                <button
+                  type="button"
+                  class="form-control"
+                  (click)="searchValue()"
+                >
+                  <i class="fas fa-search"></i>&nbsp;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!---------Search table------------->
+          <div class="row">
+            <div class="col-md-12">
+              <table
+                class="table mt-3"
+                [mfData]="filter_on_specialization"
+                #mf="mfDataTable"
+                [mfRowsOnPage]="rowsOnPage"
+              >
+                <thead class="table-header">
+                  <tr>
+                    <th class="table-text-header">Sl. #</th>
+                    <th>USN</th>
+                    <th>Name</th>
+                    <th>Job Position</th>
+                    <th>Specialization</th>
+                    <th>Company Name</th>
+                    <th>Year of Graduation</th>
+                    <th>Email</th>
+                    <th>Contact #</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="border-bottom table-data"
+                    *ngFor="let item of mf.data; let i = index"
+                  >
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.USN }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.job_position }}</td>
+                    <td>{{ item.specialzation }}</td>
+                    <td>{{ item.company_name }}</td>
+                    <td>{{ item.year_of_graduation }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.contact }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="10">
+                      <mfBootstrapPaginator></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-------------Request table----------->
+      <div *ngIf="!searchFlag && request_alumni_result.length" class="row mt-3">
+        <div class="col-md-12 text-center"><strong>My Requests</strong></div>
+        <div class="col-md-12">
+          <table class="table mt-3">
+            <thead class="table-header table-text-header">
+              <tr>
+                <th class="table-text-header">Sl. #</th>
+                <th>Topic</th>
+                <th>Requested Alumni</th>
+                <th>Aspired Role</th>
+                <th>Description</th>
+                <th>View Resume</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="border-bottom"
+                *ngFor="let item of request_alumni_result; let i = index"
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.topic }}</td>
+                <td>{{ item.alumni }}</td>
+                <td>{{ item.aspired_role }}</td>
+                <td>{{ item.description }}</td>
+                <td><i class="fa fa-eye"></i></td>
+                <td>Yet to do</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div
+        *ngIf="!searchFlag && !request_alumni_result.length"
+        class="text-center mt-5 pt-5"
+      >
+        There is No Current Requests
+      </div>
+    </div>
+  </div>
+</div>

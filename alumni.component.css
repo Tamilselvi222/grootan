@@ -1,0 +1,25 @@
+.badge {
+    padding: 8px;
+    font-size: small;
+    width: auto;
+    text-align: justify;
+    border: 1px solid #d6d6d6;
+}
+
+.filters {
+    color: #76323f;
+    font-size: 14px;
+}
+
+.divider {
+    height: auto;
+    border-left: 2px solid #dee2e6!important;
+}
+
+.border-width{
+    border-width: 2px !important ;
+}
+
+.height{
+    height:600px;
+}
